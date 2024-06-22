@@ -70,7 +70,6 @@ class InteractiveSplinePlot:
             if len(tangents) == n + 1:
                 dydx_r = tangents[i][1]
             alpha[i] = 3 * (dydx_r - dydx_l)
-            # alpha[i] = 3 / h[i] * (y[i + 1] - y[i]) - 3 / h[i - 1] * (y[i] - y[i - 1])
 
         # Diagonal elements, lower diagonal elements and solution vectors of a tridiagonal matrix.
         l = [1] * (n + 1)
