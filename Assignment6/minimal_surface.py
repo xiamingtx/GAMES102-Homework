@@ -86,9 +86,30 @@ class HalfEdgeMesh:
             T += weight * edge_vector
         self.vertices[vertex_index] += alpha * T / A
 
-    def cotangent_weight(self, vertex_index, neighbor_index):
-        # Simplified cotangent calculation
-        return 1  # Placeholder for actual cotangent calculation
+    def cotangent_weight(self, v_index, u_index):
+        shared_triangles = [t for t in self.vertex_neighbors[v_index] if u_index in self.faces[t]]
+        cot_weight = 0
+        for triangle_index in shared_triangles:
+            triangle = self.faces[triangle_index]
+            # Find the third vertex in the triangle that is not v_index and u_index
+            for i in triangle:
+                if i != v_index and i != u_index:
+                    third_vertex = i
+            # calculate the cotangent weights
+            cot_weight += self.cot_dist(v_index, u_index, third_vertex)
+        return cot_weight
+
+    def cot_dist(self, v_index, u_index, third_vertex):
+        v = self.vertices[v_index]
+        u = self.vertices[u_index]
+        t = self.vertices[third_vertex]
+        edge_vu = v - u
+        edge_vt = v - t
+        edge_ut = u - t
+        # Return the mean cotangent value
+        cot_v = np.dot(edge_vt, edge_ut) / np.linalg.norm(np.cross(edge_vt, edge_ut))
+        cot_u = np.dot(edge_vu, edge_vt) / np.linalg.norm(np.cross(edge_vu, edge_vt))
+        return 0.5 * (cot_v + cot_u)
 
 
 if __name__ == "__main__":
