@@ -113,7 +113,7 @@ class HalfEdgeMesh:
 
 
 if __name__ == "__main__":
-    mesh = HalfEdgeMesh("Balls.obj")
+    mesh = HalfEdgeMesh("../models/Balls.obj")
     mesh.draw()
     mesh.iterate()
     mesh.draw()
